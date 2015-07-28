@@ -1,6 +1,8 @@
 package com.example.rukshani.trip;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -11,7 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.parse.FindCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -73,14 +82,53 @@ public class DetailActivity extends ActionBarActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+
+
             Intent intent=getActivity().getIntent();
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+
+
             if (intent!=null&& intent.hasExtra(Intent.EXTRA_TEXT)){
                  forecastStr=intent.getStringExtra(Intent.EXTRA_TEXT);
                 ((TextView)rootView.findViewById(R.id.detail_text)).setText(forecastStr);
 
                 Log.d("name from first............",forecastStr);//1
             }
+
+            ParseObject gameScore = new ParseObject("Place");
+            final ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+            query.whereEqualTo("PName", forecastStr);
+            query.findInBackground(new FindCallback<ParseObject>() {
+
+                ImageView imageView = (ImageView) rootView.findViewById(R.id.image_View);
+
+                private Bitmap bitmap;
+                String Location="";
+                String images ="";
+
+                @Override
+                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+
+                    //  Log.d("name from needed", forecastStr);
+                    if (e == null) {
+
+                        int i = 0;
+                        for (ParseObject obj : parseObjects) {
+                            images = obj.getString("ImagePath");
+                            i++;
+                        }
+
+
+                        Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"image: " + images);
+                        imageView.setImageURI(Uri.parse(images));
+
+
+                    } else {
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
+                }
+            });
 
             Button btn_weather= (Button) rootView.findViewById(R.id.btn_weather);
             btn_weather.setOnClickListener(new View.OnClickListener() {

@@ -50,7 +50,6 @@ public class ForecastFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-
     }
 
 
