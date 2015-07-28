@@ -114,10 +114,10 @@ public class MainActivity extends ActionBarActivity {
                 query.whereEqualTo("PName", forecast);
                 query.findInBackground(new FindCallback<ParseObject>() {
 
-                    String des="";
-                    int elev=0;
-                    long lat=0;
-                    long lon=0;
+//                    String des="";
+//                    int elev=0;
+//                    long lat=0;
+//                    long lon=0;
                     String imgpath="";
 
                     @Override
@@ -127,14 +127,14 @@ public class MainActivity extends ActionBarActivity {
 
                             int i = 0;
                             for (ParseObject obj : parseObjects) {
-                                des = obj.getString("PDes");
-                                elev=obj.getInt("Elevation");
-                                lat=obj.getLong("PLat");
-                                lon=obj.getLong("PLong");
+//                                des = obj.getString("PDes");
+//                                elev=obj.getInt("Elevation");
+//                                lat=obj.getLong("PLat");
+//                                lon=obj.getLong("PLong");
                                 imgpath=obj.getString("ImagePath");
                                 i++;
                             }
-                            Log.d("score", "Retrieved............ " +  parseObjects.size() + " scores "+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon+" Imagepath:"+imgpath);//3
+                          //  Log.d("score", "Retrieved............ " +  parseObjects.size() + " scores "+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon+" Imagepath:"+imgpath);//3
 //
                         } else {
                             Log.d("score", "Error: " + e.getMessage());

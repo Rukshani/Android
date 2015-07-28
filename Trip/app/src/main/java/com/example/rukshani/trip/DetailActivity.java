@@ -75,14 +75,23 @@ public class DetailActivity extends ActionBarActivity {
                 Log.d("name from first............",forecastStr);//1
             }
 
+            final ImageView imageView = (ImageView) rootView.findViewById(R.id.image_View);
+            final TextView tv_long=(TextView)rootView.findViewById(R.id.tv_long);
+            final TextView tv_lat=(TextView)rootView.findViewById(R.id.tv_lat);
+            final TextView tv_elev=(TextView)rootView.findViewById(R.id.tv_elev);
+            final TextView tv_des=(TextView)rootView.findViewById(R.id.tv_des);
 
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
             query.whereEqualTo("PName", forecastStr);
             query.findInBackground(new FindCallback<ParseObject>() {
 
-                ImageView imageView = (ImageView) rootView.findViewById(R.id.image_View);
+
 
                 String images ="";
+                double elev=0;
+                double lat=0;
+                double lon=0;
+                String des="";
 
                 @Override
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
@@ -91,11 +100,19 @@ public class DetailActivity extends ActionBarActivity {
                         int i = 0;
                         for (ParseObject obj : parseObjects) {
                             images = obj.getString("ImagePath");
+                            elev=obj.getDouble("Elevation");
+                            lat=obj.getDouble("PLat");
+                            lon=obj.getDouble("PLong");
+                            des=obj.getString("PDes");
                             i++;
                         }
 
-                        Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"image: " + images);
+                        Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"image: " + images+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon);
                         imageView.setImageURI(Uri.parse(images));
+                        tv_long.setText("Longitude :"+lon);
+                        tv_lat.setText("Latitude : "+lat);
+                        tv_elev.setText("Elevation : "+elev+" m");
+                        tv_des.setText(des);
 
                     } else {
                         Log.d("score", "Error: " + e.getMessage());
