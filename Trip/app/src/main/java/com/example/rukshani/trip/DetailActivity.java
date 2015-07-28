@@ -109,9 +109,9 @@ public class DetailActivity extends ActionBarActivity {
 
                         Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"image: " + images+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon);
                         imageView.setImageURI(Uri.parse(images));
-                        tv_long.setText("Longitude :"+lon);
-                        tv_lat.setText("Latitude : "+lat);
-                        tv_elev.setText("Elevation : "+elev+" m");
+                        tv_long.setText("Longitude : "+lon);
+                        tv_lat.setText("Latitude    : "+lat);
+                        tv_elev.setText("Elevation  : "+elev+" m");
                         tv_des.setText(des);
 
                     } else {
