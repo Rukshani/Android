@@ -43,28 +43,20 @@ public class ForecastFragment extends Fragment {
     public ForecastFragment() {
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.weatherforecastfragment, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();//
+        int id = item.getItemId();
         Intent intent=getActivity().getIntent();
         if (intent!=null&& intent.hasExtra(Intent.EXTRA_TEXT)){
             code=intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -72,7 +64,6 @@ public class ForecastFragment extends Fragment {
             Log.d("city name from fragment.......",code);
         }
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask=new FetchWeatherTask();
             weatherTask.execute(String.valueOf(code));
@@ -89,13 +80,13 @@ public class ForecastFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_weather_main, container, false);
 
         String[] forecastArray={
-                "day 1",
-                "day 2",
-                "day 3",
-                "day 4",
-                "day 5",
-                "day 6",
-                "day 7"
+                "Please refresh",
+                "Please refresh",
+                "Please refresh",
+                "Please refresh",
+                "Please refresh",
+                "Please refresh",
+                "Please refresh"
         };
 
         List<String> weekForecast=new ArrayList<String>(Arrays.asList(forecastArray));
@@ -116,11 +107,6 @@ public class ForecastFragment extends Fragment {
 
         private final String LOG_TAG=FetchWeatherTask.class.getSimpleName();
 
-
-
-        /* The date/time conversion code is going to be moved outside the asynctask later,
- * so for convenience we're breaking it out into its own method now.
- */
         private String getReadableDateString(long time) {
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.

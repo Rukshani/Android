@@ -1,7 +1,6 @@
 package com.example.rukshani.trip;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,14 +39,7 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-//        Button btn_weather= (Button) findViewById(R.id.btn_weather);
-//        btn_weather.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent forecastIntent=new Intent();
-//                startActivity(forecastIntent);
-//            }
-//        });
+
     }
 
     @Override
@@ -59,12 +51,7 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -72,22 +59,14 @@ public class DetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
         public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-
-
-
             Intent intent=getActivity().getIntent();
             final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-
 
             if (intent!=null&& intent.hasExtra(Intent.EXTRA_TEXT)){
                  forecastStr=intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -96,33 +75,27 @@ public class DetailActivity extends ActionBarActivity {
                 Log.d("name from first............",forecastStr);//1
             }
 
-            ParseObject gameScore = new ParseObject("Place");
+
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
             query.whereEqualTo("PName", forecastStr);
             query.findInBackground(new FindCallback<ParseObject>() {
 
                 ImageView imageView = (ImageView) rootView.findViewById(R.id.image_View);
 
-                private Bitmap bitmap;
-                String Location="";
                 String images ="";
 
                 @Override
                 public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
 
-                    //  Log.d("name from needed", forecastStr);
                     if (e == null) {
-
                         int i = 0;
                         for (ParseObject obj : parseObjects) {
                             images = obj.getString("ImagePath");
                             i++;
                         }
 
-
                         Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"image: " + images);
                         imageView.setImageURI(Uri.parse(images));
-
 
                     } else {
                         Log.d("score", "Error: " + e.getMessage());
@@ -138,11 +111,7 @@ public class DetailActivity extends ActionBarActivity {
                     startActivity(weatherIntent);
                 }
             });
-
-
             return rootView;
         }
-
     }
-
 }
