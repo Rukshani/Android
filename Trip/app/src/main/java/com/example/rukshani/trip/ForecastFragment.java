@@ -68,7 +68,7 @@ public class ForecastFragment extends Fragment {
             code=intent.getStringExtra(Intent.EXTRA_TEXT);
 
             Log.d("city name from fragment.......",code);
-            //////////////
+           
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
             query.whereEqualTo("PName", code);
             query.findInBackground(new FindCallback<ParseObject>() {
@@ -89,7 +89,7 @@ public class ForecastFragment extends Fragment {
                 }
             });
 
-            /////////////////
+
 
         }
 
