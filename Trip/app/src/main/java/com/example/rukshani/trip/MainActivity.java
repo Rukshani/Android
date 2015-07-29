@@ -71,19 +71,20 @@ public class MainActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             String[] placeArray ={
+                "Nilaweli",
+                "Nuwara Eliya",
+                "Peradeniya Garden",
+                "Pinnawala Elephant Orphanage",
+                "Pinnawala Open Zoo",
+                "Ritigala",
                 "Sigiriya",
                 "Sinharaja",
-                "Adams Peak",
-                "Yala",
-                "Galle Face",
-                "Tooth Relic",
-                "Arugam Bay",
+                "Temple of the Tooth Relic",
                 "Peradeniya Garden",
-                "Nilaweli",
-                "Trincolmalee",
-                "IS",
+                "Trinco Bay",
                 "Unawatuna",
-                "Anuradhapura",
+                "Yala",
+                "Unawatuna",
                 "Yapahuwa"
             };
             List<String> places=new ArrayList<String>(Arrays.asList(placeArray));
