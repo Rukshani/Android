@@ -15,6 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +40,8 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-    String code;
+
+    String cityName="";
 
     private ArrayAdapter<String> mForecastAdapter;
 
@@ -56,17 +61,41 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        String code;
         int id = item.getItemId();
         Intent intent=getActivity().getIntent();
         if (intent!=null&& intent.hasExtra(Intent.EXTRA_TEXT)){
             code=intent.getStringExtra(Intent.EXTRA_TEXT);
 
             Log.d("city name from fragment.......",code);
+           
+            final ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+            query.whereEqualTo("PName", code);
+            query.findInBackground(new FindCallback<ParseObject>() {
+
+                @Override
+                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+
+                    if (e == null) {
+                        int i = 0;
+                        for (ParseObject obj : parseObjects) {
+                            cityName = obj.getString("CityName");
+                            i++;
+                        }
+                        Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"city..."+cityName);
+                    } else {
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
+                }
+            });
+
+
+
         }
 
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask=new FetchWeatherTask();
-            weatherTask.execute(String.valueOf(code));
+            weatherTask.execute(String.valueOf(cityName));
             return true;
         }
 
