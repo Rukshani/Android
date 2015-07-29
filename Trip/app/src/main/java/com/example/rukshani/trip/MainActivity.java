@@ -24,7 +24,9 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Created by rukshani on 7/24/2015.
+ */
 
 public class MainActivity extends ActionBarActivity {
 
@@ -44,19 +46,13 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -64,9 +60,6 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
@@ -109,11 +102,9 @@ public class MainActivity extends ActionBarActivity {
 
             final ArrayAdapter<String> placesAdapter = new ArrayAdapter<String>(
                     getActivity(),
-                    //id of list item layout
                     R.layout.list_item_places,
-                    //id of the text view to populate
                     R.id.list_item_places_textview,
-                    places);//name of the array list
+                    places);
 
             ListView listView= (ListView) rootView.findViewById(R.id.listview_forecast);
             listView.setAdapter(placesAdapter);
@@ -121,7 +112,6 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String forecast=placesAdapter.getItem(position);
-//                    Intent  intent=new Intent(getActivity(),DetailActivity.class).putExtra(Intent.EXTRA_TEXT,forecast);
 
                 ParseObject gameScore = new ParseObject("Place");
 //                gameScore.put("PName", 1337);
@@ -136,32 +126,28 @@ public class MainActivity extends ActionBarActivity {
                 query.whereEqualTo("PName", forecast);
                 query.findInBackground(new FindCallback<ParseObject>() {
 
-                    String des="";
-                    int elev=0;
-                    int lat=0;
-                    int lon=0;
+//                    String des="";
+//                    int elev=0;
+//                    long lat=0;
+//                    long lon=0;
                     String imgpath="";
-                   // String cityName ="";
 
                     @Override
                     public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
 
-                      //  Log.d("name from needed", forecastStr);
                         if (e == null) {
 
                             int i = 0;
                             for (ParseObject obj : parseObjects) {
-                                des = obj.getString("PDes");
-                                elev=obj.getInt("Elevation");
-                                lat=obj.getInt("PLat");
-                                lon=obj.getInt("PLong");
+//                                des = obj.getString("PDes");
+//                                elev=obj.getInt("Elevation");
+//                                lat=obj.getLong("PLat");
+//                                lon=obj.getLong("PLong");
                                 imgpath=obj.getString("ImagePath");
                                 i++;
                             }
-                            Log.d("score", "Retrieved............ " +  parseObjects.size() + " scores "+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon+" Imagepath:"+imgpath);//3
-//                            Intent intent1=new Intent(getActivity(),DetailActivity.class);
-                           // String codeString= String.valueOf(code);
-//                            intent1.putExtra("codez",codeString);
+                          //  Log.d("score", "Retrieved............ " +  parseObjects.size() + " scores "+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon+" Imagepath:"+imgpath);//3
+//
                         } else {
                             Log.d("score", "Error: " + e.getMessage());
                         }
@@ -173,8 +159,6 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
                 }
             });
-
-
             return rootView;
         }
     }

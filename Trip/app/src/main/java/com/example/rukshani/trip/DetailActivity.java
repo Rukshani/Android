@@ -1,6 +1,7 @@
 package com.example.rukshani.trip;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -11,7 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.parse.FindCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.List;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -31,14 +39,7 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-//        Button btn_weather= (Button) findViewById(R.id.btn_weather);
-//        btn_weather.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent forecastIntent=new Intent();
-//                startActivity(forecastIntent);
-//            }
-//        });
+
     }
 
     @Override
@@ -50,12 +51,7 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -63,24 +59,66 @@ public class DetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
         public PlaceholderFragment() {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-
             Intent intent=getActivity().getIntent();
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
             if (intent!=null&& intent.hasExtra(Intent.EXTRA_TEXT)){
                  forecastStr=intent.getStringExtra(Intent.EXTRA_TEXT);
                 ((TextView)rootView.findViewById(R.id.detail_text)).setText(forecastStr);
 
                 Log.d("name from first............",forecastStr);//1
             }
+
+            final ImageView imageView = (ImageView) rootView.findViewById(R.id.image_View);
+            final TextView tv_long=(TextView)rootView.findViewById(R.id.tv_long);
+            final TextView tv_lat=(TextView)rootView.findViewById(R.id.tv_lat);
+            final TextView tv_elev=(TextView)rootView.findViewById(R.id.tv_elev);
+            final TextView tv_des=(TextView)rootView.findViewById(R.id.tv_des);
+
+            final ParseQuery<ParseObject> query = ParseQuery.getQuery("Place");
+            query.whereEqualTo("PName", forecastStr);
+            query.findInBackground(new FindCallback<ParseObject>() {
+
+
+
+                String images ="";
+                double elev=0;
+                double lat=0;
+                double lon=0;
+                String des="";
+
+                @Override
+                public void done(List<ParseObject> parseObjects, com.parse.ParseException e) {
+
+                    if (e == null) {
+                        int i = 0;
+                        for (ParseObject obj : parseObjects) {
+                            images = obj.getString("ImagePath");
+                            elev=obj.getDouble("Elevation");
+                            lat=obj.getDouble("PLat");
+                            lon=obj.getDouble("PLong");
+                            des=obj.getString("PDes");
+                            i++;
+                        }
+
+                        Log.d("score", "Retrieved " + parseObjects.size() + " scores " +"image: " + images+" Description:"+des+" Elevation:"+elev+" Lat:"+lat+" Lon:"+lon);
+                        imageView.setImageURI(Uri.parse(images));
+                        tv_long.setText("Longitude : "+lon);
+                        tv_lat.setText("Latitude    : "+lat);
+                        tv_elev.setText("Elevation  : "+elev+" m");
+                        tv_des.setText(des);
+
+                    } else {
+                        Log.d("score", "Error: " + e.getMessage());
+                    }
+                }
+            });
 
             Button btn_weather= (Button) rootView.findViewById(R.id.btn_weather);
             btn_weather.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +128,7 @@ public class DetailActivity extends ActionBarActivity {
                     startActivity(weatherIntent);
                 }
             });
-
-
             return rootView;
         }
-
     }
-
 }
