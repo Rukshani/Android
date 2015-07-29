@@ -2,6 +2,7 @@ package com.example.rukshani.trip;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -39,6 +40,17 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        Intent intent = new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS);
+        boolean available = intent.resolveActivity(getPackageManager()) != null;
+        if(available){
+            Log.e("YourApp", "Activity found");
+        }if(!available){
+            Intent intent2 = new Intent(Intent.ACTION_MAIN);
+            intent2.setClassName("com.android.phone", "com.android.phone.Settings");
+            startActivity(intent2);//
+        }
+
         Parse.initialize(this, "e8zwpzFHlfYtfzW6pMbs2KLSjyB8WKYcT5c7kJz4", "7QypGcqL7rGNBT6P0Lu4pRpZOtY6yym3paccs36A");
         ParseInstallation.getCurrentInstallation().saveInBackground();
     }
@@ -84,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
                     "Jaffna",
                     "Knuckles",
                     "Nelum Pokuna",
-                    "Nilaweli",
+                    "Nilaveli",
                     "Peradeniya Garden",
                     "Nuwara Eliya",
                     "Pinnawala Elephant Orphanage",
